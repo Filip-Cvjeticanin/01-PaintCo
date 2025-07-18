@@ -23,3 +23,10 @@ class TimeManager:
         #    sec = int(self.timeElapsed / 1000)
         #    msec = int(self.timeElapsed - sec * 1000)
         #    print(f"[{sec:0>4}:{msec:0>3}]: second passed!")
+
+    def timeToString(self):
+        time = self.timeElapsed
+        sec = int(time / 1000)
+        msec = int(time - sec * 1000)
+        returnString = f"[{sec:0>4}:{msec:0>3}]: "
+        return returnString

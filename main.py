@@ -2,6 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from TimeManager import TimeManager
+from ClickableWidget import ClickableWidget
 
 import sys
 
@@ -22,22 +23,29 @@ class MyMainWindow(QMainWindow):
         self.CentralLayout = QVBoxLayout()
         self.CentralWidget.setLayout(self.CentralLayout)
 
+        self.fillerWidget = ClickableWidget(timeManager)
+        self.fillerWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.CentralLayout.addWidget(self.fillerWidget, stretch=1)
+
         self.saluteButton = QPushButton("Salute!")
+        self.saluteButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.saluteButton.clicked.connect(self.salute)
-        self.CentralLayout.addWidget(self.saluteButton)
+        self.CentralLayout.addWidget(self.saluteButton, stretch=1)
+
+        #self.fillerWidget.mousePressEvent()
 
     def salute(self):
         time = timeManager.getTime()
         sec = int(time / 1000)
         msec = int(time - sec * 1000)
-        print(f"[{sec:0>4}:{msec:0>3}]: I salute you!")
+        print(timeManager.timeToString() + "I salute you!")
 
 
 app = QApplication(sys.argv)
-window = MyMainWindow()
 timeManager = TimeManager()
-timeManager.start()
+window = MyMainWindow()
 
+timeManager.start()
 
 
 app.exec_()
