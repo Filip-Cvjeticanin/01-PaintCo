@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QTimer
+from PySide6.QtCore import QTimer
 
 
 class TimeManager:
@@ -19,10 +19,6 @@ class TimeManager:
 
     def tick(self):
         self.timeElapsed += 10
-        #if self.timeElapsed % 1000 == 0:
-        #    sec = int(self.timeElapsed / 1000)
-        #    msec = int(self.timeElapsed - sec * 1000)
-        #    print(f"[{sec:0>4}:{msec:0>3}]: second passed!")
 
     def timeToString(self):
         time = self.timeElapsed

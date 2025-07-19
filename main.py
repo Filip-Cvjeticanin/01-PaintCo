@@ -1,12 +1,12 @@
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+from PySide6.QtCore import *
 from TimeManager import TimeManager
 from ClickableWidget import ClickableWidget
 
 import sys
 
-from PyQt5.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QVBoxLayout
 
 
 class MyMainWindow(QMainWindow):
@@ -24,13 +24,14 @@ class MyMainWindow(QMainWindow):
         self.CentralWidget.setLayout(self.CentralLayout)
 
         self.fillerWidget = ClickableWidget(timeManager)
-        self.fillerWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.CentralLayout.addWidget(self.fillerWidget, stretch=1)
+        self.fillerWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+
 
         self.saluteButton = QPushButton("Salute!")
-        self.saluteButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.saluteButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.saluteButton.clicked.connect(self.salute)
         self.CentralLayout.addWidget(self.saluteButton, stretch=1)
+        self.CentralLayout.addWidget(self.fillerWidget, stretch=1)
 
         #self.fillerWidget.mousePressEvent()
 
@@ -40,12 +41,12 @@ class MyMainWindow(QMainWindow):
         msec = int(time - sec * 1000)
         print(timeManager.timeToString() + "I salute you!")
 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    timeManager = TimeManager()
+    window = MyMainWindow()
 
-app = QApplication(sys.argv)
-timeManager = TimeManager()
-window = MyMainWindow()
-
-timeManager.start()
+    timeManager.start()
 
 
-app.exec_()
+    app.exec()

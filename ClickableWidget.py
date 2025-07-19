@@ -1,6 +1,6 @@
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+from PySide6.QtCore import *
 
 
 
@@ -10,4 +10,9 @@ class ClickableWidget(QWidget):
         self.timeManager = timeManager
 
     def mousePressEvent(self, event: QMouseEvent):
-        print(self.timeManager.timeToString() + "clicked on ClickableWidget")
+        mouseButton = ""
+        if event.button() == Qt.MouseButton.LeftButton: mouseButton = "Left"
+        elif event.button() == Qt.MouseButton.RightButton: mouseButton = "Right"
+        pos = (event.pos().x(), event.pos().y())
+        posGlobal = (event.globalPos().x(), event.globalPos().y())
+        print(self.timeManager.timeToString() + mouseButton + " clicked on ClickableWidget; local @", pos, "global @", posGlobal)
