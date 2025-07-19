@@ -1,18 +1,32 @@
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
+from PySide6.QtWidgets import QVBoxLayout
+
+
 from TimeManager import TimeManager
+from CentralWidgets.MenuWidget import MenuWidget
 from ClickableWidget import ClickableWidget
+
+
+
+
 
 import sys
 
-from PySide6.QtWidgets import QVBoxLayout
+
 
 
 class MyMainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.setMinimumSize(800,600)
+        self.setWindowTitle("Paint CO")
+        self.show()
+    '''
+        Example usage of a window with 2 widgets.
+        
         self.setMinimumSize(800, 600)
         self.setMaximumSize(1200,900)
         self.setWindowTitle("Paint CO")
@@ -33,20 +47,20 @@ class MyMainWindow(QMainWindow):
         self.CentralLayout.addWidget(self.saluteButton, stretch=1)
         self.CentralLayout.addWidget(self.fillerWidget, stretch=1)
 
-        #self.fillerWidget.mousePressEvent()
 
     def salute(self):
-        time = timeManager.getTime()
-        sec = int(time / 1000)
-        msec = int(time - sec * 1000)
         print(timeManager.timeToString() + "I salute you!")
+    '''
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    #Define app window and timer
     timeManager = TimeManager()
+    app = QApplication(sys.argv)
     window = MyMainWindow()
-
     timeManager.start()
+
+    menuWidg = MenuWidget()
+    window.setCentralWidget(menuWidg)
 
 
     app.exec()
