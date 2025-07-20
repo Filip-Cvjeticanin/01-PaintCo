@@ -16,7 +16,7 @@ class MenuWidget(QWidget):
         self.leftFiller = QWidget()
         self.buttonsWrapper = QWidget()
         self.rightFiller = QWidget()
-                #self.buttonsWrapper.setStyleSheet("background-color: #ffcccb;")  # light red
+        #self.buttonsWrapper.setStyleSheet("background-color: #ffcccb;")  # light red
         self.HorizontalLayout.addWidget(self.leftFiller, stretch=5)
         self.HorizontalLayout.addWidget(self.buttonsWrapper, stretch=10)
         self.HorizontalLayout.addWidget(self.rightFiller, stretch=5)

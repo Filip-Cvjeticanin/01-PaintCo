@@ -6,7 +6,9 @@ from PySide6.QtWidgets import QVBoxLayout
 
 from TimeManager import TimeManager
 from CentralWidgets.MenuWidget import MenuWidget
+from CentralWidgets.BaseModeWidget import BaseModeWidget
 from ClickableWidget import ClickableWidget
+
 
 
 
@@ -26,53 +28,32 @@ class MyMainWindow(QMainWindow):
         self.show()
 
         self.menuWidg = None
-        self.label1 = None
-        self.label2 = None
-        self.label3 = None
-        self.label4 = None
+        self.mode1 = None
+        self.mode2 = None
+        self.mode3 = None
+        self.mode4 = None
 
+    def switchCentralWidgetTo(self, widget):
+        current = self.centralWidget()
+        if current is not None:
+            current.setParent(None)  # Prevent auto-delete
+        self.setCentralWidget(widget)
 
     def LaunchMenu(self):
-        self.setCentralWidget(self.menuWidg)
+        self.switchCentralWidgetTo(self.menuWidg)
 
     def LaunchCOPaint(self):
-        self.setCentralWidget(self.label1)
+        self.switchCentralWidgetTo(self.mode1)
 
     def LaunchPaintBattle(self):
-        self.setCentralWidget(self.label2)
+        self.switchCentralWidgetTo(self.mode2)
 
     def LaunchFreeDraw(self):
-        self.setCentralWidget(self.label3)
+        self.switchCentralWidgetTo(self.mode3)
 
     def LaunchGallery(self):
-        self.setCentralWidget(self.label4)
-    '''
-        Example usage of a window with 2 widgets.
-        
-        self.setMinimumSize(800, 600)
-        self.setMaximumSize(1200,900)
-        self.setWindowTitle("Paint CO")
-        self.show()
+        self.switchCentralWidgetTo(self.mode4)
 
-        self.CentralWidget = QWidget()
-        self.setCentralWidget(self.CentralWidget)
-        self.CentralLayout = QVBoxLayout()
-        self.CentralWidget.setLayout(self.CentralLayout)
-
-        self.fillerWidget = ClickableWidget(timeManager)
-        self.fillerWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-
-
-        self.saluteButton = QPushButton("Salute!")
-        self.saluteButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.saluteButton.clicked.connect(self.salute)
-        self.CentralLayout.addWidget(self.saluteButton, stretch=1)
-        self.CentralLayout.addWidget(self.fillerWidget, stretch=1)
-
-
-    def salute(self):
-        print(timeManager.timeToString() + "I salute you!")
-    '''
 
 if __name__ == "__main__":
     #Define app window and timer
@@ -81,19 +62,26 @@ if __name__ == "__main__":
     window = MyMainWindow()
     timeManager.start()
 
-    window.menuWidg = MenuWidget()
-    window.label1 = QLabel("CO Paint")
-    window.label2 = QLabel("Paint Battle")
-    window.label3 = QLabel("Free Draw")
-    window.label4 = QLabel("Gallery")
+    window.menuWidg = MenuWidget()          # Add the MenuWidget as a member to the window.
+    window.mode1 = BaseModeWidget()         # Add the Modes as a members to the window.
+    window.mode2 = BaseModeWidget()
+    window.mode3 = BaseModeWidget()
+    window.mode4 = BaseModeWidget()
 
+    # Connect buttons for each mode.
     window.menuWidg.COPaintButton.clicked.connect(window.LaunchCOPaint)
     window.menuWidg.BattleButton.clicked.connect(window.LaunchPaintBattle)
     window.menuWidg.FreeDrawButton.clicked.connect(window.LaunchFreeDraw)
     window.menuWidg.GalleryButton.clicked.connect(window.LaunchGallery)
 
+    # Connect back buttons for each mode.
+    window.mode1.backButton.clicked.connect(window.LaunchMenu)
+    window.mode2.backButton.clicked.connect(window.LaunchMenu)
+    window.mode3.backButton.clicked.connect(window.LaunchMenu)
+    window.mode4.backButton.clicked.connect(window.LaunchMenu)
 
 
     window.setCentralWidget(window.menuWidg)
+
 
     app.exec()
