@@ -24,6 +24,21 @@ class MyMainWindow(QMainWindow):
         self.setMinimumSize(800,600)
         self.setWindowTitle("Paint CO")
         self.show()
+
+    def LaunchMenu(self):
+        pass
+
+    def LaunchCOPaint(self):
+        pass
+
+    def LaunchPaintBattle(self):
+        pass
+
+    def LaunchFreeDraw(self):
+        pass
+
+    def LaunchGallery(self):
+        pass
     '''
         Example usage of a window with 2 widgets.
         
