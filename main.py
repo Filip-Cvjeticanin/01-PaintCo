@@ -25,20 +25,27 @@ class MyMainWindow(QMainWindow):
         self.setWindowTitle("Paint CO")
         self.show()
 
+        self.menuWidg = None
+        self.label1 = None
+        self.label2 = None
+        self.label3 = None
+        self.label4 = None
+
+
     def LaunchMenu(self):
-        pass
+        self.setCentralWidget(self.menuWidg)
 
     def LaunchCOPaint(self):
-        pass
+        self.setCentralWidget(self.label1)
 
     def LaunchPaintBattle(self):
-        pass
+        self.setCentralWidget(self.label2)
 
     def LaunchFreeDraw(self):
-        pass
+        self.setCentralWidget(self.label3)
 
     def LaunchGallery(self):
-        pass
+        self.setCentralWidget(self.label4)
     '''
         Example usage of a window with 2 widgets.
         
@@ -74,8 +81,19 @@ if __name__ == "__main__":
     window = MyMainWindow()
     timeManager.start()
 
-    menuWidg = MenuWidget()
-    window.setCentralWidget(menuWidg)
+    window.menuWidg = MenuWidget()
+    window.label1 = QLabel("CO Paint")
+    window.label2 = QLabel("Paint Battle")
+    window.label3 = QLabel("Free Draw")
+    window.label4 = QLabel("Gallery")
 
+    window.menuWidg.COPaintButton.clicked.connect(window.LaunchCOPaint)
+    window.menuWidg.BattleButton.clicked.connect(window.LaunchPaintBattle)
+    window.menuWidg.FreeDrawButton.clicked.connect(window.LaunchFreeDraw)
+    window.menuWidg.GalleryButton.clicked.connect(window.LaunchGallery)
+
+
+
+    window.setCentralWidget(window.menuWidg)
 
     app.exec()
