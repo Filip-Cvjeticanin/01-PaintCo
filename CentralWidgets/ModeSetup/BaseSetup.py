@@ -12,14 +12,28 @@ class BaseSetup(BaseModeWidget):
         self.mainLayout = QVBoxLayout()
         self.configLayout = QVBoxLayout()
         self.playerLayout = QHBoxLayout()
+        self.configBlockLayouts = []
+        for i in range(2):
+            new = QHBoxLayout()
+            self.configBlockLayouts.append(new)
 
         # Wrappers:
         self.configWrapper = QWidget()
         self.playerWrapper = QWidget()
+        self.configBlocks = []
+        for i in range(2):
+            new = QWidget()
+            self.configBlocks.append(new)
 
         # Functional Widgets:
         self.title = QWidget()          #QLABEL
         self.startButton = QWidget()    #QPUSHBUTTON
+
+        self.playerNumberLabel = QWidget()
+        self.playerNumberValue = QWidget()
+
+        self.secondsPerTurnLabel = QWidget()
+        self.secondsPerTurnValue = QWidget()
 
         # Policy setup:
         self.configWrapper.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -30,10 +44,16 @@ class BaseSetup(BaseModeWidget):
         # Styling:
         self.baseLayout.setContentsMargins(0, 0, 0, 0)
         self.mainLayout.setSpacing(0)
+        self.configBlockLayouts[0].setContentsMargins(0, 0, 0, 0)
+        self.configBlockLayouts[1].setContentsMargins(0, 0, 0, 0)
+
         self.configWrapper.setStyleSheet("border: 2px dashed black")
         self.playerWrapper.setStyleSheet("border: 2px dashed black")
         self.title.setStyleSheet("border: 2px dashed black")
         self.startButton.setStyleSheet("border: 2px dashed black")
+
+        self.playerNumberLabel.setStyleSheet("border-color: red")
+        self.secondsPerTurnLabel.setStyleSheet("border-color: blue")
 
         # Add to layouts:
         self.mainLayout.addWidget(self.title, stretch=10)
@@ -41,6 +61,18 @@ class BaseSetup(BaseModeWidget):
         self.mainLayout.addWidget(self.playerWrapper, stretch=60)
         self.mainLayout.addWidget(self.startButton, stretch=10)
 
+        self.configLayout.addWidget(self.configBlocks[0])
+        self.configLayout.addWidget(self.configBlocks[1])
 
+        self.configBlockLayouts[0].addWidget(self.playerNumberLabel)
+        self.configBlockLayouts[0].addWidget(self.playerNumberValue)
+        self.configBlockLayouts[1].addWidget(self.secondsPerTurnLabel)
+        self.configBlockLayouts[1].addWidget(self.secondsPerTurnValue)
 
+        # Apply layouts:
         self.contentWrapper.setLayout(self.mainLayout)
+        self.configWrapper.setLayout(self.configLayout)
+        self.playerWrapper.setLayout(self.playerLayout)
+
+        self.configBlocks[0].setLayout(self.configBlockLayouts[0])
+        self.configBlocks[1].setLayout(self.configBlockLayouts[1])
