@@ -3,7 +3,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import QVBoxLayout
 
-
+from CentralWidgets.ModeSetup.BaseSetup import BaseSetup
 from TimeManager import TimeManager
 from CentralWidgets.MenuWidget import MenuWidget
 from CentralWidgets.BaseModeWidget import BaseModeWidget
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     timeManager.start()
 
     window.menuWidg = MenuWidget()          # Add the MenuWidget as a member to the window.
-    window.mode1 = BaseModeWidget(QLabel("CO Paint"))  # Add the Modes as a members to the window.
+    window.mode1 = BaseSetup()  # Add the Modes as a members to the window.
     window.mode2 = BaseModeWidget(QLabel("Paint Battle"))
     window.mode3 = BaseModeWidget(QLabel("Free Draw"))
     window.mode4 = BaseModeWidget(QLabel("Gallery"))

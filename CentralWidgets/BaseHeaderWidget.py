@@ -18,6 +18,7 @@ class BaseHeaderWidget(QWidget):
         self.contentWrapper = QWidget()
 
         self.backButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.backButton.setMaximumSize(100,50)
         self.contentWrapper.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         #self.backButton.setStyleSheet("background-color: green")
