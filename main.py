@@ -21,18 +21,18 @@ import sys
 
 
 class MyMainWindow(QMainWindow):
+    menuWidg: MenuWidget
+    mode1: BaseSetup
+    mode2: BaseSetup
+    mode3: BaseModeWidget
+    mode4: BaseModeWidget
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.setMinimumSize(800,600)
         self.setWindowTitle("Paint CO")
         self.show()
-
-        self.menuWidg = None
-        self.mode1 = None
-        self.mode2 = None
-        self.mode3 = None
-        self.mode4 = None
 
     def switchCentralWidgetTo(self, widget):
         current = self.centralWidget()
@@ -43,10 +43,21 @@ class MyMainWindow(QMainWindow):
     def LaunchMenu(self):
         self.switchCentralWidgetTo(self.menuWidg)
 
-    def LaunchCOPaint(self):
+    def LaunchCOPaintSettings(self):
         self.switchCentralWidgetTo(self.mode1)
 
-    def LaunchPaintBattle(self):
+    def LaunchCOPaint(self):
+        for i in range(16):
+            globalData.playerNames[i] = self.mode1.playerInputWidgets[i].text() or "Player " + str(i + 1)
+        print(globalData.playerNames)
+
+        globalData.playerNumber = self.mode1.playerNumberValue.value()
+        globalData.secondsPerTurn = self.mode1.secondsPerTurnValue.value()
+
+        print(globalData.playerNumber)
+        print(globalData.secondsPerTurn)
+
+    def LaunchPaintBattleSettings(self):
         self.switchCentralWidgetTo(self.mode2)
 
     def LaunchFreeDraw(self):
@@ -66,14 +77,14 @@ if __name__ == "__main__":
     timeManager.start()
 
     window.menuWidg = MenuWidget()          # Add the MenuWidget as a member to the window.
-    window.mode1 = BaseSetup()  # Add the Modes as a members to the window.
-    window.mode2 = BaseModeWidget(QLabel("Paint Battle"))
+    window.mode1 = BaseSetup("CO paint")  # Add the Modes as a members to the window.
+    window.mode2 = BaseSetup("Paint Battle")
     window.mode3 = BaseModeWidget(QLabel("Free Draw"))
     window.mode4 = BaseModeWidget(QLabel("Gallery"))
 
     # Connect buttons for each mode.
-    window.menuWidg.COPaintButton.clicked.connect(window.LaunchCOPaint)
-    window.menuWidg.BattleButton.clicked.connect(window.LaunchPaintBattle)
+    window.menuWidg.COPaintButton.clicked.connect(window.LaunchCOPaintSettings)
+    window.menuWidg.BattleButton.clicked.connect(window.LaunchPaintBattleSettings)
     window.menuWidg.FreeDrawButton.clicked.connect(window.LaunchFreeDraw)
     window.menuWidg.GalleryButton.clicked.connect(window.LaunchGallery)
 
@@ -82,9 +93,11 @@ if __name__ == "__main__":
     window.mode2.backButton.clicked.connect(window.LaunchMenu)
     window.mode3.backButton.clicked.connect(window.LaunchMenu)
     window.mode4.backButton.clicked.connect(window.LaunchMenu)
+    window.mode1.startButton.clicked.connect(window.LaunchCOPaint)
 
 
     window.setCentralWidget(window.menuWidg)
 
 
     app.exec()
+    print(window.mode1.playerWrapper.size())

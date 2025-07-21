@@ -5,8 +5,8 @@ from PySide6.QtCore import *
 from CentralWidgets.BaseModeWidget import BaseModeWidget
 
 class BaseSetup(BaseModeWidget):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
+    def __init__(self, title="", *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         # Layouts:
         self.mainLayout = QVBoxLayout()
@@ -34,18 +34,28 @@ class BaseSetup(BaseModeWidget):
             self.playerBlocks.append(new)
 
         # Functional Widgets:
-        self.title = QWidget()          #QLABEL
-        self.startButton = QWidget()    #QPUSHBUTTON
+        self.title = QLabel(title)          #QLABEL
+        self.startButton = QPushButton("Start")    #QPUSHBUTTON
 
-        self.playerNumberLabel = QWidget()
-        self.playerNumberValue = QWidget()
+        self.playerNumberLabel = QLabel("Number of players:")
+        self.playerNumberValue = QSpinBox()
+        self.playerNumberValue.setMinimum(2)
+        self.playerNumberValue.setMaximum(16)
+        self.playerNumberValue.setValue(5)
 
-        self.secondsPerTurnLabel = QWidget()
-        self.secondsPerTurnValue = QWidget()
+        self.secondsPerTurnLabel = QLabel("Seconds per turn:")
+        self.secondsPerTurnValue = QSpinBox()
+        self.secondsPerTurnValue.setMinimum(5)
+        self.secondsPerTurnValue.setMaximum(3600)
+        self.secondsPerTurnValue.setValue(45)
 
         self.playerInputWidgets = []
         for i in range(16):
-            new = QWidget()
+            new = QLineEdit()
+            new.setPlaceholderText("Player " + str(i+1))
+            font = new.font()
+            font.setPointSize(15)
+            new.setFont(font)
             self.playerInputWidgets.append(new)
 
         # Policy setup:
@@ -62,30 +72,52 @@ class BaseSetup(BaseModeWidget):
         self.playerLayout.setContentsMargins(0, 0, 0, 0)
         self.playerLayout.setSpacing(0)
 
-        self.configWrapper.setStyleSheet("border: 2px dashed black")
-        self.playerWrapper.setStyleSheet("border: 2px dashed black")
-        self.title.setStyleSheet("border: 2px dashed black")
-        self.startButton.setStyleSheet("border: 2px dashed black")
+        #self.configWrapper.setStyleSheet("border: 2px dashed black")
+        #self.playerWrapper.setStyleSheet("border: 2px dashed black")
+        #self.title.setStyleSheet("border: 2px dashed black")
+        #self.startButton.setStyleSheet("border: 2px dashed black")
 
         self.playerNumberLabel.setStyleSheet("border-color: red")
         self.secondsPerTurnLabel.setStyleSheet("border-color: blue")
 
+        self.playerWrapper.setMaximumSize(800,600)
+        self.playerWrapper.setMaximumSize(800,600)
+        self.configWrapper.setMaximumSize(4000,120)
+
         for i in range(16):
-            self.playerInputWidgets[i]
+            self.playerInputWidgets[i].setMaximumSize(400,40)
+            self.playerInputWidgets[i].setMinimumSize(170,40)
+
+        font = self.title.font()
+        font.setPointSize(30)
+        font.bold()
+        self.title.setFont(font)
+
+        self.playerNumberLabel.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        font = self.playerNumberLabel.font()
+        font.setPointSize(14)
+        self.playerNumberLabel.setFont(font)
+        self.secondsPerTurnLabel.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        font = self.secondsPerTurnLabel.font()
+        font.setPointSize(14)
+        self.secondsPerTurnLabel.setFont(font)
+
+        self.startButton.setMaximumSize(600,300)
+        self.startButton.setMinimumSize(200, 50)
 
         # Add to layouts:
-        self.mainLayout.addWidget(self.title, stretch=10)
+        self.mainLayout.addWidget(self.title, stretch=10,alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter)
         self.mainLayout.addWidget(self.configWrapper, stretch=20)
-        self.mainLayout.addWidget(self.playerWrapper, stretch=60)
-        self.mainLayout.addWidget(self.startButton, stretch=10)
+        self.mainLayout.addWidget(self.playerWrapper, stretch=60, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.mainLayout.addWidget(self.startButton, stretch=10, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
 
         self.configLayout.addWidget(self.configBlocks[0])
         self.configLayout.addWidget(self.configBlocks[1])
 
-        self.configBlockLayouts[0].addWidget(self.playerNumberLabel)
-        self.configBlockLayouts[0].addWidget(self.playerNumberValue)
-        self.configBlockLayouts[1].addWidget(self.secondsPerTurnLabel)
-        self.configBlockLayouts[1].addWidget(self.secondsPerTurnValue)
+        self.configBlockLayouts[0].addWidget(self.playerNumberLabel, stretch=1)
+        self.configBlockLayouts[0].addWidget(self.playerNumberValue, stretch=1)
+        self.configBlockLayouts[1].addWidget(self.secondsPerTurnLabel, stretch=1)
+        self.configBlockLayouts[1].addWidget(self.secondsPerTurnValue, stretch=1)
 
         self.playerLayout.addWidget(self.playerBlocks[0])
         self.playerLayout.addWidget(self.playerBlocks[1])
@@ -94,7 +126,8 @@ class BaseSetup(BaseModeWidget):
 
         for i in range(4):
             for j in range(4):
-                self.playerBlockLayouts[i].addWidget(self.playerInputWidgets[i*4 + j])
+                self.playerBlockLayouts[i].addWidget(self.playerInputWidgets[i*4 + j], alignment=Qt.AlignmentFlag.AlignHCenter)
+
 
         # Apply layouts:
         self.contentWrapper.setLayout(self.mainLayout)
