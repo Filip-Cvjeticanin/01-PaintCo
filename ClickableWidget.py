@@ -1,13 +1,13 @@
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
-
+from TimeManager import TimeManager
 
 
 class ClickableWidget(QWidget):
-    def __init__(self, timeManager, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.timeManager = timeManager
+        self.timeManager = TimeManager.getInstance()
 
     def mousePressEvent(self, event: QMouseEvent):
         mouseButton = ""

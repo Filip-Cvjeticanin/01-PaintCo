@@ -5,15 +5,16 @@ from PySide6.QtCore import *
 from CentralWidgets.BaseHeaderWidget import BaseHeaderWidget
 
 class BaseModeWidget(QWidget):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, receivedContentWidget = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if receivedContentWidget is None: receivedContentWidget = QWidget()
 
         self.baseLayout = QVBoxLayout()
         self.baseLayout.setSpacing(0)
         self.setLayout(self.baseLayout)
 
         self.headerWrapper = BaseHeaderWidget()
-        self.contentWrapper = QWidget()
+        self.contentWrapper = receivedContentWidget
         self.backButton = self.headerWrapper.backButton
 
         self.headerWrapper.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -27,3 +28,5 @@ class BaseModeWidget(QWidget):
 
         self.baseLayout.addWidget(self.headerWrapper, stretch=6)
         self.baseLayout.addWidget(self.contentWrapper, stretch=94)
+
+

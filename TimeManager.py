@@ -2,10 +2,18 @@ from PySide6.QtCore import QTimer
 
 
 class TimeManager:
+    _instance = None
+
     def __init__(self):
         self.timeElapsed = 0
         self.timer = QTimer()
         self.timer.timeout.connect(self.tick)
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = cls()  # __init__ runs only once
+        return cls._instance
 
     def start(self):
         print("Starting application...")

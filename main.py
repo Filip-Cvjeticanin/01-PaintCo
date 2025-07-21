@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QVBoxLayout
 from TimeManager import TimeManager
 from CentralWidgets.MenuWidget import MenuWidget
 from CentralWidgets.BaseModeWidget import BaseModeWidget
+from globalData import GlobalData
 from ClickableWidget import ClickableWidget
 
 
@@ -56,17 +57,19 @@ class MyMainWindow(QMainWindow):
 
 
 if __name__ == "__main__":
+    globalData = GlobalData.getInstance()
+    globalData.COPaintTurn = 60
     #Define app window and timer
-    timeManager = TimeManager()
+    timeManager = TimeManager.getInstance()
     app = QApplication(sys.argv)
     window = MyMainWindow()
     timeManager.start()
 
     window.menuWidg = MenuWidget()          # Add the MenuWidget as a member to the window.
-    window.mode1 = BaseModeWidget()         # Add the Modes as a members to the window.
-    window.mode2 = BaseModeWidget()
-    window.mode3 = BaseModeWidget()
-    window.mode4 = BaseModeWidget()
+    window.mode1 = BaseModeWidget(QLabel("CO Paint"))  # Add the Modes as a members to the window.
+    window.mode2 = BaseModeWidget(QLabel("Paint Battle"))
+    window.mode3 = BaseModeWidget(QLabel("Free Draw"))
+    window.mode4 = BaseModeWidget(QLabel("Gallery"))
 
     # Connect buttons for each mode.
     window.menuWidg.COPaintButton.clicked.connect(window.LaunchCOPaint)
