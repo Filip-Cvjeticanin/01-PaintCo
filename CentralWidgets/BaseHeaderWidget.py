@@ -8,7 +8,7 @@ class BaseHeaderWidget(QWidget):
 
         self.baseHeaderLayout = QHBoxLayout()
         self.baseHeaderLayout.setSpacing(0)
-        self.baseHeaderLayout.setContentsMargins(0, 0, 0, 0)
+        self.baseHeaderLayout.setContentsMargins(20, 10 , 0, 0)
         self.setLayout(self.baseHeaderLayout)
 
         #self.setStyleSheet("background-color: blue;")  # ✅ Background color
@@ -19,6 +19,7 @@ class BaseHeaderWidget(QWidget):
 
         self.backButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.backButton.setMaximumSize(100,50)
+        self.backButton.setMinimumSize(75, 36)
         self.contentWrapper.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         #self.backButton.setStyleSheet("background-color: green")

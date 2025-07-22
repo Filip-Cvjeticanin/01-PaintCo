@@ -20,6 +20,8 @@ class BaseSetup(BaseModeWidget):
         for i in range(4):
             new = QVBoxLayout()
             self.playerBlockLayouts.append(new)
+        self.input1Layout = QHBoxLayout()
+        self.input2Layout = QHBoxLayout()
 
         # Wrappers:
         self.configWrapper = QWidget()
@@ -32,6 +34,8 @@ class BaseSetup(BaseModeWidget):
         for i in range(4):
             new = QWidget()
             self.playerBlocks.append(new)
+        self.input1Wrapper = QWidget()
+        self.input2Wrapper = QWidget()
 
         # Functional Widgets:
         self.title = QLabel(title)          #QLABEL
@@ -71,11 +75,13 @@ class BaseSetup(BaseModeWidget):
         self.configBlockLayouts[1].setContentsMargins(0, 0, 0, 0)
         self.playerLayout.setContentsMargins(0, 0, 0, 0)
         self.playerLayout.setSpacing(0)
+        self.input1Layout.setContentsMargins(0,0,0,0)
+        self.input2Layout.setContentsMargins(0,0,0,0)
 
-        #self.configWrapper.setStyleSheet("border: 2px dashed black")
-        #self.playerWrapper.setStyleSheet("border: 2px dashed black")
-        #self.title.setStyleSheet("border: 2px dashed black")
-        #self.startButton.setStyleSheet("border: 2px dashed black")
+        self.configWrapper.setStyleSheet("border: 2px dashed black")
+        self.playerWrapper.setStyleSheet("border: 2px dashed black")
+        self.title.setStyleSheet("border: 2px dashed black")
+        self.startButton.setStyleSheet("border: 2px dashed black")
 
         self.playerNumberLabel.setStyleSheet("border-color: red")
         self.secondsPerTurnLabel.setStyleSheet("border-color: blue")
@@ -115,9 +121,9 @@ class BaseSetup(BaseModeWidget):
         self.configLayout.addWidget(self.configBlocks[1])
 
         self.configBlockLayouts[0].addWidget(self.playerNumberLabel, stretch=1)
-        self.configBlockLayouts[0].addWidget(self.playerNumberValue, stretch=1)
+        self.configBlockLayouts[0].addWidget(self.input1Wrapper, stretch=1)
         self.configBlockLayouts[1].addWidget(self.secondsPerTurnLabel, stretch=1)
-        self.configBlockLayouts[1].addWidget(self.secondsPerTurnValue, stretch=1)
+        self.configBlockLayouts[1].addWidget(self.input2Wrapper, stretch=1)
 
         self.playerLayout.addWidget(self.playerBlocks[0])
         self.playerLayout.addWidget(self.playerBlocks[1])
@@ -127,6 +133,9 @@ class BaseSetup(BaseModeWidget):
         for i in range(4):
             for j in range(4):
                 self.playerBlockLayouts[i].addWidget(self.playerInputWidgets[i*4 + j], alignment=Qt.AlignmentFlag.AlignHCenter)
+
+        self.input1Layout.addWidget(self.playerNumberValue, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.input2Layout.addWidget(self.secondsPerTurnValue, alignment=Qt.AlignmentFlag.AlignLeft)
 
 
         # Apply layouts:
@@ -141,3 +150,6 @@ class BaseSetup(BaseModeWidget):
         self.playerBlocks[1].setLayout(self.playerBlockLayouts[1])
         self.playerBlocks[2].setLayout(self.playerBlockLayouts[2])
         self.playerBlocks[3].setLayout(self.playerBlockLayouts[3])
+
+        self.input1Wrapper.setLayout(self.input1Layout)
+        self.input2Wrapper.setLayout(self.input2Layout)

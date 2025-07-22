@@ -56,6 +56,7 @@ class MyMainWindow(QMainWindow):
 
         print(globalData.playerNumber)
         print(globalData.secondsPerTurn)
+        print(self.mode1.backButton.size())
 
     def LaunchPaintBattleSettings(self):
         self.switchCentralWidgetTo(self.mode2)
