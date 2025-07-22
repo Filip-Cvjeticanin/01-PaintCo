@@ -3,6 +3,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 
 from CentralWidgets.BaseModeWidget import BaseModeWidget
+from globalData import GlobalData
 
 class BaseSetup(BaseModeWidget):
     def __init__(self, title="", *args, **kwargs):
@@ -41,11 +42,12 @@ class BaseSetup(BaseModeWidget):
         self.title = QLabel(title)          #QLABEL
         self.startButton = QPushButton("Start")    #QPUSHBUTTON
 
+        globalData = GlobalData.getInstance()
         self.playerNumberLabel = QLabel("Number of players:")
         self.playerNumberValue = QSpinBox()
         self.playerNumberValue.setMinimum(2)
         self.playerNumberValue.setMaximum(16)
-        self.playerNumberValue.setValue(5)
+        self.playerNumberValue.setValue(globalData.playerNumber)
 
         self.secondsPerTurnLabel = QLabel("Seconds per turn:")
         self.secondsPerTurnValue = QSpinBox()
@@ -78,10 +80,10 @@ class BaseSetup(BaseModeWidget):
         self.input1Layout.setContentsMargins(0,0,0,0)
         self.input2Layout.setContentsMargins(0,0,0,0)
 
-        self.configWrapper.setStyleSheet("border: 2px dashed black")
-        self.playerWrapper.setStyleSheet("border: 2px dashed black")
-        self.title.setStyleSheet("border: 2px dashed black")
-        self.startButton.setStyleSheet("border: 2px dashed black")
+        #self.configWrapper.setStyleSheet("border: 2px dashed black")
+        #self.playerWrapper.setStyleSheet("border: 2px dashed black")
+        #self.title.setStyleSheet("border: 2px dashed black")
+        #self.startButton.setStyleSheet("border: 2px dashed black")
 
         self.playerNumberLabel.setStyleSheet("border-color: red")
         self.secondsPerTurnLabel.setStyleSheet("border-color: blue")
@@ -153,3 +155,18 @@ class BaseSetup(BaseModeWidget):
 
         self.input1Wrapper.setLayout(self.input1Layout)
         self.input2Wrapper.setLayout(self.input2Layout)
+
+        self.applySignal()
+
+        globalData = GlobalData.getInstance()
+        self.enablePlayerInputs(globalData.playerNumber)
+
+    def applySignal(self):
+        self.playerNumberValue.valueChanged.connect(self.enablePlayerInputs)
+
+    def enablePlayerInputs(self, playerNum):
+        for i in range(playerNum):
+            self.playerInputWidgets[i].show()
+
+        for i in range(playerNum, 16):
+            self.playerInputWidgets[i].hide()

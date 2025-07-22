@@ -1,6 +1,7 @@
 class GlobalData:
     _instance = None
     playerNames = []
+    playerNumber = 5
 
     def __init__(self):
         self.COPaintTurn = 120
