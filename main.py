@@ -49,7 +49,7 @@ class MyMainWindow(QMainWindow):
 
     def LaunchCOPaint(self):
         for i in range(16):
-            globalData.playerNames[i] = self.mode1.playerInputWidgets[i].text() or "Player " + str(i + 1)
+            globalData.playerNames[i] = self.mode1.playerInputWidgets[i].text()
         print(globalData.playerNames)
 
         globalData.playerNumber = self.mode1.playerNumberValue.value()
@@ -62,6 +62,18 @@ class MyMainWindow(QMainWindow):
     def LaunchPaintBattleSettings(self):
         self.mode2.update()
         self.switchCentralWidgetTo(self.mode2)
+
+    def LaunchPaintBattle(self):
+        for i in range(16):
+            globalData.playerNames[i] = self.mode2.playerInputWidgets[i].text()
+        print(globalData.playerNames)
+
+        globalData.playerNumber = self.mode2.playerNumberValue.value()
+        globalData.secondsPerTurn = self.mode2.secondsPerTurnValue.value()
+
+        print(globalData.playerNumber)
+        print(globalData.secondsPerTurn)
+        print(self.mode2.backButton.size())
 
     def LaunchFreeDraw(self):
         self.switchCentralWidgetTo(self.mode3)
@@ -97,6 +109,7 @@ if __name__ == "__main__":
     window.mode3.backButton.clicked.connect(window.LaunchMenu)
     window.mode4.backButton.clicked.connect(window.LaunchMenu)
     window.mode1.startButton.clicked.connect(window.LaunchCOPaint)
+    window.mode2.startButton.clicked.connect(window.LaunchPaintBattle)
 
 
     window.setCentralWidget(window.menuWidg)

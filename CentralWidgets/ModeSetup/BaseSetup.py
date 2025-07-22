@@ -205,4 +205,3 @@ class BaseSetup(BaseModeWidget):
         self.enablePlayerInputs(globalData.playerNumber)
         self.updatePlayerNames()
 
-        print(text, globalData.playerNames)
