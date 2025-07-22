@@ -198,7 +198,7 @@ class BaseSetup(BaseModeWidget):
             self.playerInputWidgets[i].setText(globalData.playerNames[i])
             self.playerInputWidgets[i].textChanged.connect(self.savePlayerNames)
 
-    def update(self, text = ""):
+    def update_(self, text =""):
         globalData = GlobalData.getInstance()
         self.playerNumberValue.setValue(globalData.playerNumber)
         self.secondsPerTurnValue.setValue(globalData.secondsPerTurn)

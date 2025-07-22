@@ -8,6 +8,8 @@ from TimeManager import TimeManager
 from CentralWidgets.MenuWidget import MenuWidget
 from CentralWidgets.BaseModeWidget import BaseModeWidget
 from globalData import GlobalData
+from CentralWidgets.CanvasMode import CanvasMode
+from CentralWidgets.CustomWidgets.Canvas import Canvas
 from ClickableWidget import ClickableWidget
 
 
@@ -24,7 +26,7 @@ class MyMainWindow(QMainWindow):
     menuWidg: MenuWidget
     mode1: BaseSetup
     mode2: BaseSetup
-    mode3: BaseModeWidget
+    mode3: CanvasMode
     mode4: BaseModeWidget
 
     def __init__(self, *args, **kwargs):
@@ -44,7 +46,7 @@ class MyMainWindow(QMainWindow):
         self.switchCentralWidgetTo(self.menuWidg)
 
     def LaunchCOPaintSettings(self):
-        self.mode1.update()
+        self.mode1.update_()
         self.switchCentralWidgetTo(self.mode1)
 
     def LaunchCOPaint(self):
@@ -60,7 +62,7 @@ class MyMainWindow(QMainWindow):
         print(self.mode1.backButton.size())
 
     def LaunchPaintBattleSettings(self):
-        self.mode2.update()
+        self.mode2.update_()
         self.switchCentralWidgetTo(self.mode2)
 
     def LaunchPaintBattle(self):
@@ -81,6 +83,9 @@ class MyMainWindow(QMainWindow):
     def LaunchGallery(self):
         self.switchCentralWidgetTo(self.mode4)
 
+    def exitFreeDraw(self):
+        self.mode3.canvasInstance.clear()
+        self.switchCentralWidgetTo(self.menuWidg)
 
 if __name__ == "__main__":
     globalData = GlobalData.getInstance()
@@ -94,7 +99,7 @@ if __name__ == "__main__":
     window.menuWidg = MenuWidget()          # Add the MenuWidget as a member to the window.
     window.mode1 = BaseSetup("CO paint")  # Add the Modes as a members to the window.
     window.mode2 = BaseSetup("Paint Battle")
-    window.mode3 = BaseModeWidget(QLabel("Free Draw"))
+    window.mode3 = CanvasMode()
     window.mode4 = BaseModeWidget(QLabel("Gallery"))
 
     # Connect buttons for each mode.
@@ -106,7 +111,7 @@ if __name__ == "__main__":
     # Connect back buttons for each mode.
     window.mode1.backButton.clicked.connect(window.LaunchMenu)
     window.mode2.backButton.clicked.connect(window.LaunchMenu)
-    window.mode3.backButton.clicked.connect(window.LaunchMenu)
+    window.mode3.backButton.clicked.connect(window.exitFreeDraw)
     window.mode4.backButton.clicked.connect(window.LaunchMenu)
     window.mode1.startButton.clicked.connect(window.LaunchCOPaint)
     window.mode2.startButton.clicked.connect(window.LaunchPaintBattle)
