@@ -2,12 +2,13 @@ class GlobalData:
     _instance = None
     playerNames = []
     playerNumber = 5
+    secondsPerTurn = 45
 
     def __init__(self):
         self.COPaintTurn = 120
         self.resolutionChoice = 1
         for i in range(16):
-            self.playerNames.append("Player " + str(i + 1))
+            self.playerNames.append("")
 
     @classmethod
     def getInstance(cls):

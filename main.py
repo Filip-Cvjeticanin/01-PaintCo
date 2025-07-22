@@ -44,6 +44,7 @@ class MyMainWindow(QMainWindow):
         self.switchCentralWidgetTo(self.menuWidg)
 
     def LaunchCOPaintSettings(self):
+        self.mode1.update()
         self.switchCentralWidgetTo(self.mode1)
 
     def LaunchCOPaint(self):
@@ -59,6 +60,7 @@ class MyMainWindow(QMainWindow):
         print(self.mode1.backButton.size())
 
     def LaunchPaintBattleSettings(self):
+        self.mode2.update()
         self.switchCentralWidgetTo(self.mode2)
 
     def LaunchFreeDraw(self):

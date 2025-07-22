@@ -4,6 +4,7 @@ from PySide6.QtCore import *
 
 from CentralWidgets.BaseModeWidget import BaseModeWidget
 from globalData import GlobalData
+from TimeManager import  TimeManager
 
 class BaseSetup(BaseModeWidget):
     def __init__(self, title="", *args, **kwargs):
@@ -163,6 +164,9 @@ class BaseSetup(BaseModeWidget):
 
     def applySignal(self):
         self.playerNumberValue.valueChanged.connect(self.enablePlayerInputs)
+        self.secondsPerTurnValue.valueChanged.connect(self.saveTurnTimer)
+        for i in range(16):
+            self.playerInputWidgets[i].textChanged.connect(self.savePlayerNames)
 
     def enablePlayerInputs(self, playerNum):
         for i in range(playerNum):
@@ -170,3 +174,35 @@ class BaseSetup(BaseModeWidget):
 
         for i in range(playerNum, 16):
             self.playerInputWidgets[i].hide()
+
+        globalData = GlobalData.getInstance()
+        globalData.playerNumber = playerNum
+
+    def saveTurnTimer(self, sec):
+        globalData = GlobalData.getInstance()
+        globalData.secondsPerTurn = sec
+
+    def savePlayerNames(self, text = ""):
+        globalData = GlobalData.getInstance()
+        for i in range(16):
+            globalData.playerNames[i] = self.playerInputWidgets[i].text()
+        t = TimeManager.getInstance()
+
+    def updatePlayerNames(self):
+        globalData = GlobalData.getInstance()
+
+        for i in range(16):
+            self.playerInputWidgets[i].textChanged.disconnect()
+            if globalData.playerNames[i] == "":
+                self.playerInputWidgets[i].setPlaceholderText("Player " + str(i + 1))
+            self.playerInputWidgets[i].setText(globalData.playerNames[i])
+            self.playerInputWidgets[i].textChanged.connect(self.savePlayerNames)
+
+    def update(self, text = ""):
+        globalData = GlobalData.getInstance()
+        self.playerNumberValue.setValue(globalData.playerNumber)
+        self.secondsPerTurnValue.setValue(globalData.secondsPerTurn)
+        self.enablePlayerInputs(globalData.playerNumber)
+        self.updatePlayerNames()
+
+        print(text, globalData.playerNames)
