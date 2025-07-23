@@ -26,7 +26,7 @@ class BaseModeWidget(QWidget):
         #self.headerWrapper.setStyleSheet("background-color: blue")
         #self.contentWrapper.setStyleSheet("background-color: red")
 
-        self.baseLayout.addWidget(self.headerWrapper, stretch=6)
-        self.baseLayout.addWidget(self.contentWrapper, stretch=94)
+        self.baseLayout.addWidget(self.headerWrapper, stretch=8)
+        self.baseLayout.addWidget(self.contentWrapper, stretch=92)
 
 

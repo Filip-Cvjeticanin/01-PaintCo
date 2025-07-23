@@ -1,8 +1,17 @@
+from PySide6.QtCore import *
+
 class GlobalData:
     _instance = None
     playerNames = []
     playerNumber = 5
     secondsPerTurn = 45
+    availableColors = [Qt.GlobalColor.black,
+                       Qt.GlobalColor.white,
+                       Qt.GlobalColor.red,
+                       Qt.GlobalColor.blue,
+                       Qt.GlobalColor.yellow,
+                       Qt.GlobalColor.green,
+                       Qt.GlobalColor.magenta]
 
     def __init__(self):
         self.COPaintTurn = 120

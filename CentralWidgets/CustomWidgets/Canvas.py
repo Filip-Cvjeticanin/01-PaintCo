@@ -5,8 +5,9 @@ from PySide6.QtCore import *
 from TimeManager import TimeManager
 
 class Canvas(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, receivedColor = Qt.GlobalColor.black, parent=None):
         super().__init__(parent)
+        self.receivedColor = receivedColor
         self.setAttribute(Qt.WidgetAttribute.WA_StaticContents)
         self.setMouseTracking(True)
 
@@ -34,7 +35,7 @@ class Canvas(QWidget):
         if event.button() in (Qt.MouseButton.LeftButton, Qt.MouseButton.RightButton):
             self.last_point = event.pos()
 
-            color = Qt.black if event.button() == Qt.MouseButton.LeftButton else Qt.white
+            color = self.receivedColor if event.button() == Qt.MouseButton.LeftButton else Qt.white
             painter = QPainter(self.canvas)
             pen = QPen(color, 5, Qt.SolidLine)
             painter.setPen(pen)
@@ -44,7 +45,7 @@ class Canvas(QWidget):
     def mouseMoveEvent(self, event):
 
         color = None
-        if event.buttons() & Qt.MouseButton.LeftButton: color = Qt.GlobalColor.black
+        if event.buttons() & Qt.MouseButton.LeftButton: color = self.receivedColor
         elif event.buttons() & Qt.MouseButton.RightButton: color = Qt.GlobalColor.white
 
         if ((event.buttons() & Qt.MouseButton.LeftButton) or (event.buttons() & Qt.MouseButton.RightButton)) and self.last_point:
@@ -62,3 +63,6 @@ class Canvas(QWidget):
         print("clear called")
         self.canvas.fill(Qt.white)
         self.update()
+
+    def setPenColor(self, newColor = Qt.GlobalColor.black):
+        self.receivedColor = newColor
