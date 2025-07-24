@@ -1,13 +1,20 @@
-from PySide6.QtCore import QTimer
+from tabnanny import check
+
+from PySide6.QtCore import *
 
 
-class TimeManager:
+class TimeManager(QObject):
     _instance = None
+
+    turnOver:Signal = Signal()
+    check: bool = False
+    countDownGoal = 0
 
     def __init__(self):
         self.timeElapsed = 0
         self.timer = QTimer()
         self.timer.timeout.connect(self.tick)
+        super().__init__()
 
     @classmethod
     def getInstance(cls):
@@ -27,6 +34,11 @@ class TimeManager:
 
     def tick(self):
         self.timeElapsed += 10
+        if self.check:
+            if self.timeElapsed >= self.countDownGoal:
+                self.check = False
+                self.turnOver.emit()
+
 
     def timeToString(self):
         time = self.timeElapsed
@@ -34,3 +46,7 @@ class TimeManager:
         msec = int(time - sec * 1000)
         returnString = f"[{sec:0>4}:{msec:0>3}]: "
         return returnString
+
+    def countDown(self, seconds: int):
+        self.countDownGoal = self.getTime() + seconds * 1000
+        self.check = True
