@@ -87,6 +87,14 @@ class MyMainWindow(QMainWindow):
         self.mode3.canvasInstance.clear()
         self.switchCentralWidgetTo(self.menuWidg)
 
+    def saveFree(self):
+        canvas = self.mode3.canvasInstance.canvas
+        if canvas.save("output.jpg"):
+            print(f"Canvas successfully saved to output.jpg")
+        else:
+            print("Failed to save canvas.")
+
+
 if __name__ == "__main__":
     globalData = GlobalData.getInstance()
     globalData.COPaintTurn = 60
@@ -115,6 +123,7 @@ if __name__ == "__main__":
     window.mode4.backButton.clicked.connect(window.LaunchMenu)
     window.mode1.startButton.clicked.connect(window.LaunchCOPaint)
     window.mode2.startButton.clicked.connect(window.LaunchPaintBattle)
+    window.mode3.bindNextButton(window.saveFree)
 
 
     window.setCentralWidget(window.menuWidg)

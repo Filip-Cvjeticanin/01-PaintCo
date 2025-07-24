@@ -5,9 +5,10 @@ from PySide6.QtCore import *
 from TimeManager import TimeManager
 
 class Canvas(QWidget):
-    def __init__(self, receivedColor = Qt.GlobalColor.black, parent=None):
+    def __init__(self, receivedColor = Qt.GlobalColor.black, penSize=6, parent=None):
         super().__init__(parent)
         self.receivedColor = receivedColor
+        self.penSize = penSize
         self.setAttribute(Qt.WidgetAttribute.WA_StaticContents)
         self.setMouseTracking(True)
 
@@ -17,19 +18,30 @@ class Canvas(QWidget):
         self.last_point = None
 
     def resizeEvent(self, event):
-        # Resize canvas without losing existing content
-        if self.canvas.size() != self.size():
-            new_canvas = QPixmap(self.size())
+        new_size = self.size()
+
+        if new_size.width() > self.canvas.width() or new_size.height() > self.canvas.height():
+            # Only grow the canvas, never shrink it
+            new_width = max(self.canvas.width(), new_size.width())
+            new_height = max(self.canvas.height(), new_size.height())
+
+            new_canvas = QPixmap(new_width, new_height)
             new_canvas.fill(Qt.white)
+
             painter = QPainter(new_canvas)
             painter.drawPixmap(0, 0, self.canvas)
+            painter.end()
+
             self.canvas = new_canvas
+
+        super().resizeEvent(event)
 
     def paintEvent(self, event):
         # Draw the canvas onto the widget
         print(TimeManager.getInstance().timeToString() + " paintEvent triggered")
         painter = QPainter(self)
-        painter.drawPixmap(0, 0, self.canvas)
+        visible_rect = self.rect()
+        painter.drawPixmap(visible_rect, self.canvas, visible_rect)
 
     def mousePressEvent(self, event):
         if event.button() in (Qt.MouseButton.LeftButton, Qt.MouseButton.RightButton):
@@ -37,7 +49,7 @@ class Canvas(QWidget):
 
             color = self.receivedColor if event.button() == Qt.MouseButton.LeftButton else Qt.white
             painter = QPainter(self.canvas)
-            pen = QPen(color, 5, Qt.SolidLine)
+            pen = QPen(color, self.penSize, Qt.SolidLine)
             painter.setPen(pen)
             painter.drawPoint(self.last_point)  # Draw a dot at click position
             self.update()
@@ -50,7 +62,7 @@ class Canvas(QWidget):
 
         if ((event.buttons() & Qt.MouseButton.LeftButton) or (event.buttons() & Qt.MouseButton.RightButton)) and self.last_point:
             painter = QPainter(self.canvas)
-            pen = QPen(color, 5, Qt.SolidLine)
+            pen = QPen(color, self.penSize, Qt.SolidLine)
             painter.setPen(pen)
             painter.drawLine(self.last_point, event.pos())
             self.last_point = event.pos()
@@ -66,3 +78,6 @@ class Canvas(QWidget):
 
     def setPenColor(self, newColor = Qt.GlobalColor.black):
         self.receivedColor = newColor
+
+    def setPenSize(self, newSize = 6):
+        self.penSize = newSize

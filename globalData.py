@@ -12,6 +12,7 @@ class GlobalData:
                        Qt.GlobalColor.yellow,
                        Qt.GlobalColor.green,
                        Qt.GlobalColor.magenta]
+    availableSizes = [1, 2, 4, 6, 9, 12, 15, 30]
 
     def __init__(self):
         self.COPaintTurn = 120
