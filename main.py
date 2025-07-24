@@ -1,7 +1,7 @@
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
-from PySide6.QtWidgets import QVBoxLayout
+
 
 from CentralWidgets.ModeSetup.BaseSetup import BaseSetup
 from TimeManager import TimeManager
@@ -89,8 +89,10 @@ class MyMainWindow(QMainWindow):
 
     def saveFree(self):
         canvas = self.mode3.canvasInstance.canvas
-        if canvas.save("output.jpg"):
-            print(f"Canvas successfully saved to output.jpg")
+        timeStamp = QDateTime.currentDateTime().toString("yyyy-MM-dd_HH-mm-ss")
+        filePath = f"saves/{timeStamp}.png"
+        if canvas.save(filePath):
+            print(f"Canvas successfully saved to {filePath}")
         else:
             print("Failed to save canvas.")
 

@@ -56,12 +56,15 @@ class CanvasMode(BaseModeWidget):
         self.canvasInstance.setPenSize(size)
 
     def bindNextButton(self, function = None, **kwargs):
+
         timeManager = TimeManager.getInstance()
         def dummy():
+            return
             print(timeManager.timeToString() + "Save not implemented!" + str(self.canvasInstance.size().toTuple()))
 
         if function is None:
             function = dummy
+
         self.infoSection.nextButton.clicked.connect(function)
 
 
