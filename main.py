@@ -14,7 +14,6 @@ from ClickableWidget import ClickableWidget
 
 import sys
 
-
 class MyMainWindow(QMainWindow):
     menuWidg: MenuWidget
     mode1: BaseSetup
@@ -53,8 +52,6 @@ class MyMainWindow(QMainWindow):
     def LaunchCOPaint(self):
         for i in range(16):
             globalData.playerNames[i] = self.mode1.playerInputWidgets[i].text()
-
-
         globalData.playerNumber = self.mode1.playerNumberValue.value()
         globalData.secondsPerTurn = self.mode1.secondsPerTurnValue.value()
         print(globalData.playerNumber)
@@ -63,16 +60,16 @@ class MyMainWindow(QMainWindow):
         self.currentCanvas = CanvasMode(playerName=globalData.playerNames[0])
         self.canvasCollection: list[QPixmap] = []
         if self.nextTurnConnected:
-            timeManager.turnOver.disconnect(self.nextTurn)
+            timeManager.turnOver.disconnect()
 
-        timeManager.turnOver.connect(self.nextTurn)
+        timeManager.turnOver.connect(self.nextTurnCO)
         self.nextTurnConnected = True
         self.currentCanvas.backButton.clicked.connect(self.ExitMode)
         self.LaunchCurrentCanvas()
         print(timeManager.timeToString() + "Starting turn 1...")
         timeManager.countDown(globalData.secondsPerTurn)
 
-    def nextTurn(self):
+    def nextTurnCO(self):
         self.canvasCollection.append(self.currentCanvas.canvasInstance.canvas)
         if self.currentCanvas.backButton.receivers(SIGNAL("clicked()")) > 0:
             self.currentCanvas.backButton.clicked.disconnect()
@@ -109,14 +106,42 @@ class MyMainWindow(QMainWindow):
     def LaunchPaintBattle(self):
         for i in range(16):
             globalData.playerNames[i] = self.mode2.playerInputWidgets[i].text()
-        print(globalData.playerNames)
-
         globalData.playerNumber = self.mode2.playerNumberValue.value()
         globalData.secondsPerTurn = self.mode2.secondsPerTurnValue.value()
-
         print(globalData.playerNumber)
-        print(globalData.secondsPerTurn)
-        print(self.mode2.backButton.size())
+
+        self.currentPlayerIndex = 0
+        self.currentCanvas = CanvasMode(playerName=globalData.playerNames[0])
+        self.canvasCollection: list[QPixmap] = []
+        if self.nextTurnConnected:
+            timeManager.turnOver.disconnect()
+
+        timeManager.turnOver.connect(self.nextTurnBattle)
+        self.nextTurnConnected = True
+        self.currentCanvas.backButton.clicked.connect(self.ExitMode)
+        self.LaunchCurrentCanvas()
+        print(timeManager.timeToString() + "Starting turn 1...")
+        timeManager.countDown(globalData.secondsPerTurn)
+
+    def nextTurnBattle(self):
+        self.canvasCollection.append(self.currentCanvas.canvasInstance.canvas)
+        if self.currentCanvas.backButton.receivers(SIGNAL("clicked()")):
+            self.currentCanvas.backButton.clicked.disconnect()
+        self.currentPlayerIndex += 1
+        if self.currentPlayerIndex == globalData.playerNumber:
+            print("Game over... saving...")
+            self.saveGameCanvases()
+            self.LaunchMenu()
+            return
+
+        print(timeManager.timeToString() + "Starting turn " + str(self.currentPlayerIndex + 1) + "...")
+
+        oldCanvas = self.currentCanvas
+        self.currentCanvas = CanvasMode(playerName=globalData.playerNames[self.currentPlayerIndex])
+        self.currentCanvas.backButton.clicked.connect(self.ExitMode)
+        #self.currentCanvas.canvasInstance.canvas = oldCanvas.canvasInstance.canvas.copy()
+        self.LaunchCurrentCanvas()
+        timeManager.countDown(globalData.secondsPerTurn)
 
     def LaunchFreeDraw(self):
         self.switchCentralWidgetTo(self.mode3)
@@ -176,4 +201,3 @@ if __name__ == "__main__":
 
 
     app.exec()
-    print(window.mode1.playerWrapper.size())
